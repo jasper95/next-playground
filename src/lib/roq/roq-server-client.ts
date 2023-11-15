@@ -59,7 +59,7 @@ export class RoqServerClient {
 
   public asSuperAdmin() {
     return new RoqBaasSdk(this.backendHost, {
-      getAccessToken: () => Promise.resolve(`Basic ${Buffer.from(`${process.env.ROQ_ENVIRONMENT_ID}:${process.env.ROQ_API_KEY}`).toString('base64')}`)
+      getAccessToken: () => Promise.resolve(`Basic ${Buffer.from(`undefined:undefined`).toString('base64')}`)
     })
   }
 }
@@ -72,3 +72,4 @@ export const createServerClient = (backendHost?: string, platformHost?: string) 
 }
 
 export const defaultRoqServerClient = createServerClient()
+

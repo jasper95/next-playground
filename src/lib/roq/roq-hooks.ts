@@ -5,9 +5,50 @@ import type { Prisma } from './types';
 import { DefaultArgs, GetFindResult } from './types/runtime/library';
 import { SWRRequestOptions, defaultBrowserClient } from './roq-client'
 import { RequestOptions } from './roq-baas-sdk';
-import { FileCategoriesQuery, FileCategoriesQueryVariables, FileCategoryContentGroupQuery, FileCategoryContentGroupQueryVariables, FileCategoryContentGroupsQuery, FileCategoryContentGroupsQueryVariables, FileCategoryContentTypesQuery, FileCategoryContentTypesQueryVariables, FileCategoryQuery, FileCategoryQueryVariables, FileQuery, FileQueryVariables, FilesQuery, FilesQueryVariables, RoleQuery, RoleQueryVariables, RolesQuery, RolesQueryVariables, UserInviteQuery, UserInviteQueryVariables, UserInvitesQuery, UserInvitesQueryVariables, UserProfileQuery, UserProfileQueryVariables, UserProfilesQuery, UserProfilesQueryVariables } from '@roq/client';
+import {
+  
+    UserProfilesQuery,
+    UserProfilesQueryVariables,
+  
+    UserProfileQuery,
+    UserProfileQueryVariables,
+  
+    RolesQuery,
+    RolesQueryVariables,
+  
+    RoleQuery,
+    RoleQueryVariables,
+  
+    UserInvitesQuery,
+    UserInvitesQueryVariables,
+  
+    UserInviteQuery,
+    UserInviteQueryVariables,
+  
+    FilesQuery,
+    FilesQueryVariables,
+  
+    FileQuery,
+    FileQueryVariables,
+  
+    FileCategoryContentTypesQuery,
+    FileCategoryContentTypesQueryVariables,
+  
+    FileCategoryContentGroupQuery,
+    FileCategoryContentGroupQueryVariables,
+  
+    FileCategoryContentGroupsQuery,
+    FileCategoryContentGroupsQueryVariables,
+  
+    FileCategoriesQuery,
+    FileCategoriesQueryVariables,
+  
+    FileCategoryQuery,
+    FileCategoryQueryVariables,
+  
+} from '@roq/client';
 
-
+ 
 export function useOrganizationFindMany<
   T extends Prisma.organizationFindManyArgs,
   R extends GetFindResult<Prisma.$organizationPayload<DefaultArgs>, T>[],
@@ -434,4 +475,4 @@ export function useRoqPlatformFileCategory(
     },
   );
 }
-
+    
