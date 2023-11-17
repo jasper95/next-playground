@@ -7,6 +7,7 @@ export default async function Home() {
   try {
     const session = await getServerSession()
     const users = await serverClient.roqPlatform.asUser().userProfiles()
+    await serverClient.asUser().user.findMany()
     console.log('users: ', JSON.stringify(users));
   } catch(error) {
     console.log('error: ', error);

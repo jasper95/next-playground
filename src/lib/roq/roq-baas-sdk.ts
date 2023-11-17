@@ -6,7 +6,7 @@ import { DefaultArgs, GetFindResult } from './types/runtime/library';
 
 export type RequestOptions = Record<string, any>;
 export interface BaasAuthenticator {
-  getAccessToken(): Promise<string>
+  getAccessToken(): Promise<string | undefined>
 }
 
   
@@ -170,6 +170,13 @@ export class RoqBaasSdk {
   public user!: UserSDK
   
 
+  private async getAuthorizationHeader() {
+    const authorization = await this.authenticator.getAccessToken()
+    return {
+      'Authorization': authorization
+    }
+  }
+
   constructor(backendHost: string, authenticator: BaasAuthenticator, baseOptions: RequestOptions = {}) {
     this.endpoint = backendHost
     this.baseOptions = baseOptions
@@ -197,6 +204,7 @@ export class RoqBaasSdk {
             method: 'POST',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -219,6 +227,7 @@ export class RoqBaasSdk {
             method: 'POST',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -247,6 +256,7 @@ export class RoqBaasSdk {
             method: 'PUT',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -269,6 +279,7 @@ export class RoqBaasSdk {
             method: 'PUT',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -291,6 +302,7 @@ export class RoqBaasSdk {
             method: 'POST',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -315,6 +327,7 @@ export class RoqBaasSdk {
             method: 'DELETE',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
             },
           },
@@ -337,6 +350,7 @@ export class RoqBaasSdk {
             method: 'DELETE',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
             },
           },
@@ -359,6 +373,7 @@ export class RoqBaasSdk {
             method: 'GET',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -382,6 +397,7 @@ export class RoqBaasSdk {
             method: 'GET',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -423,6 +439,7 @@ export class RoqBaasSdk {
             method: 'GET',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -451,6 +468,7 @@ export class RoqBaasSdk {
             method: 'POST',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -473,6 +491,7 @@ export class RoqBaasSdk {
             method: 'POST',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -501,6 +520,7 @@ export class RoqBaasSdk {
             method: 'PUT',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -523,6 +543,7 @@ export class RoqBaasSdk {
             method: 'PUT',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -545,6 +566,7 @@ export class RoqBaasSdk {
             method: 'POST',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -569,6 +591,7 @@ export class RoqBaasSdk {
             method: 'DELETE',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
             },
           },
@@ -591,6 +614,7 @@ export class RoqBaasSdk {
             method: 'DELETE',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
             },
           },
@@ -613,6 +637,7 @@ export class RoqBaasSdk {
             method: 'GET',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -636,6 +661,7 @@ export class RoqBaasSdk {
             method: 'GET',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },
@@ -677,6 +703,7 @@ export class RoqBaasSdk {
             method: 'GET',
             headers: {
               ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
               ...options?.headers,
               'content-type': 'application/json',
             },

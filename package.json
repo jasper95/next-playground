@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@roq/cli": "file:../roq-cli",
     "@roq/client": "^0.0.11",
-    "@roq/nextjs": "^2.0.0-rc7",
-    "@roq/nodejs": "^1.0.20-rc1",
+    "@roq/nextjs": "^2.0.0-r10",
+    "@roq/nodejs": "^1.0.20-rc3",
     "cookie": "^0.6.0",
     "next": "14.0.2",
     "react": "^18",
@@ -26,7 +27,6 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.2",
     "postcss": "^8",
-    "prisma": "^5.6.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
