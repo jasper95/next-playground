@@ -1,11 +1,13 @@
 'use client';
 
-import { useRoqPlatformUserProfiles } from "@/lib/roq";
+import { useRoqPlatformUserProfiles, useSession } from "@/lib/roq";
 
 
 export default function TestPage() {
   const {data} = useRoqPlatformUserProfiles()
-  console.log('data: ', data);
+  const { session, status }= useSession()
+  // console.log('session, status: ', session, status);
+  // console.log('data: ', data);
   return (
     <div>Test Page</div>
   )

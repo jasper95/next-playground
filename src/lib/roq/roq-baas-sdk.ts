@@ -1,7 +1,7 @@
 
 /* eslint-disable */
 import { type CheckSelect, fetcher, marshal, makeUrl } from '@roq/client';
-import type { Prisma, organization, user } from './types';
+import type { Prisma, organization, user, customer } from './types';
 import { DefaultArgs, GetFindResult } from './types/runtime/library';
 
 export type RequestOptions = Record<string, any>;
@@ -16,7 +16,7 @@ interface OrganizationSDK {
     T extends Prisma.organizationCreateArgs,
     R extends CheckSelect<T, organization, Prisma.organizationGetPayload<T>>,
     U extends Omit<Prisma.organizationCreateArgs, 'data'> & {
-      data: Omit<Prisma.organizationUncheckedCreateInput, 'user'>;
+      data: Omit<Prisma.organizationUncheckedCreateInput, 'customer' | 'user'>;
     },
   >(
     data: Prisma.SelectSubset<U, T>,
@@ -32,7 +32,7 @@ interface OrganizationSDK {
     T extends Prisma.organizationUpdateArgs,
     R extends Prisma.organizationGetPayload<T>,
     U extends Omit<Prisma.organizationUpdateArgs, 'data'> & {
-      data: Omit<Prisma.organizationUncheckedUpdateInput, 'user'>;
+      data: Omit<Prisma.organizationUncheckedUpdateInput, 'customer' | 'user'>;
     },
   >(
     data: Prisma.SelectSubset<U, T>,
@@ -157,6 +157,80 @@ interface UserSDK {
     options?: RequestOptions,
   ) => Promise<R>;
 }
+  
+
+interface CustomerSDK {
+  create: <
+    T extends Prisma.customerCreateArgs,
+    R extends CheckSelect<T, customer, Prisma.customerGetPayload<T>>,
+    U extends Omit<Prisma.customerCreateArgs, 'data'> & {
+      data: Prisma.customerUncheckedCreateInput;
+    },
+  >(
+    data: Prisma.SelectSubset<U, T>,
+    options?: RequestOptions,
+  ) => Promise<R | undefined>;
+
+  createMany: <T extends Prisma.customerCreateManyArgs, R extends Prisma.BatchPayload>(
+    args: Prisma.SelectSubset<T, Prisma.customerCreateManyArgs>,
+    options?: RequestOptions,
+  ) => Promise<R>;
+
+  update: <
+    T extends Prisma.customerUpdateArgs,
+    R extends Prisma.customerGetPayload<T>,
+    U extends Omit<Prisma.customerUpdateArgs, 'data'> & {
+      data: Prisma.customerUncheckedUpdateInput;
+    },
+  >(
+    data: Prisma.SelectSubset<U, T>,
+    options?: RequestOptions,
+  ) => Promise<R | undefined>;
+
+  updateMany: <T extends Prisma.customerUpdateManyArgs, R extends Prisma.BatchPayload>(
+    args: Prisma.SelectSubset<T, Prisma.customerUpdateManyArgs>,
+    options?: RequestOptions,
+  ) => Promise<R>;
+
+  upsert: <T extends Prisma.customerUpsertArgs, R extends Prisma.customerGetPayload<T>>(
+    data: Prisma.SelectSubset<T, Prisma.customerUpsertArgs>,
+    options?: RequestOptions,
+  ) => Promise<R | undefined>;
+
+  delete: <T extends Prisma.customerDeleteArgs, R extends Prisma.customerGetPayload<T>>(
+    data: Prisma.SelectSubset<T, Prisma.customerDeleteArgs>,
+    options?: RequestOptions,
+  ) => Promise<R | undefined>;
+
+  deleteMany: <T extends Prisma.customerDeleteManyArgs, R extends Prisma.BatchPayload>(
+    args: Prisma.SelectSubset<T, Prisma.customerDeleteManyArgs>,
+    options?: RequestOptions,
+  ) => Promise<R>;
+
+  findMany: <T extends Prisma.customerFindManyArgs, R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>[]>(
+    args?: Prisma.SelectSubset<T, Prisma.customerFindManyArgs>,
+    options?: RequestOptions,
+  ) => Promise<R>;
+
+  count: <T extends Prisma.customerCountArgs, R extends number>(
+    args?: Prisma.SelectSubset<T, Prisma.customerCountArgs>,
+    options?: RequestOptions,
+  ) => Promise<R>;
+
+  findManyWithCount: <
+    T extends Prisma.customerFindManyArgs,
+    R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>[],
+    C extends number,
+  >(
+    args?: Prisma.SelectSubset<T, Prisma.customerFindManyArgs>,
+    options?: RequestOptions,
+  ) => Promise<{ data: R; count: C }>;
+
+  findFirst: <T extends Prisma.customerFindFirstArgs, R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>>(
+    args?: Prisma.SelectSubset<T, Prisma.customerFindFirstArgs>,
+    options?: RequestOptions,
+  ) => Promise<R>;
+}
 
 
 
@@ -168,6 +242,8 @@ export class RoqBaasSdk {
   public organization!: OrganizationSDK
    
   public user!: UserSDK
+   
+  public customer!: CustomerSDK
   
 
   private async getAuthorizationHeader() {
@@ -193,7 +269,7 @@ export class RoqBaasSdk {
         T extends Prisma.organizationCreateArgs,
         R extends CheckSelect<T, organization, Prisma.organizationGetPayload<T>>,
         U extends Omit<Prisma.organizationCreateArgs, 'data'> & {
-          data: Omit<Prisma.organizationUncheckedCreateInput, 'user'>;
+          data: Omit<Prisma.organizationUncheckedCreateInput, 'customer' | 'user'>;
         },
       >(data: Prisma.SelectSubset<U, T>, options?: RequestOptions) {
         const response = await fetcher<R, true>(
@@ -242,7 +318,7 @@ export class RoqBaasSdk {
         T extends Prisma.organizationUpdateArgs,
         R extends Prisma.organizationGetPayload<T>,
         U extends Omit<Prisma.organizationUpdateArgs, 'data'> & {
-          data: Omit<Prisma.organizationUncheckedUpdateInput, 'user'>;
+          data: Omit<Prisma.organizationUncheckedUpdateInput, 'customer' | 'user'>;
         },
       >(
         data: Prisma.SelectSubset<U, T>,
@@ -694,6 +770,270 @@ export class RoqBaasSdk {
         R extends GetFindResult<Prisma.$userPayload<DefaultArgs>, T>,
       >(args?: Prisma.SelectSubset<T, Prisma.userFindFirstArgs>, options?: RequestOptions) {
         const url = `${ctx.endpoint}/api/model/user/findFirst`;
+        const urlWithArgs = makeUrl(url, args);
+        const response = await fetcher<R, false>(
+          urlWithArgs,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'GET',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+          },
+          fetch,
+          false,
+        );
+        return response;
+      },
+    };
+   
+    
+    this.customer = {
+      create: async function createCustomer<
+        T extends Prisma.customerCreateArgs,
+        R extends CheckSelect<T, customer, Prisma.customerGetPayload<T>>,
+        U extends Omit<Prisma.customerCreateArgs, 'data'> & {
+          data: Prisma.customerUncheckedCreateInput;
+        },
+      >(data: Prisma.SelectSubset<U, T>, options?: RequestOptions) {
+        const response = await fetcher<R, true>(
+          `${ctx.endpoint}/api/model/customer/create`,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'POST',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+            body: marshal(data),
+          },
+          fetch,
+          true,
+        );
+        return response;
+      },
+      createMany: async function createManyCustomer<
+        T extends Prisma.customerCreateManyArgs,
+        R extends Prisma.BatchPayload,
+      >(data: Prisma.SelectSubset<T, Prisma.customerCreateManyArgs>, options?: RequestOptions) {
+        const response = await fetcher<R, false>(
+          `${ctx.endpoint}/api/model/customer/createMany`,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'POST',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+            body: marshal(data),
+          },
+          fetch,
+          false,
+        );
+        return response;
+      },
+      update: async function updateCustomer<
+        T extends Prisma.customerUpdateArgs,
+        R extends Prisma.customerGetPayload<T>,
+        U extends Omit<Prisma.customerUpdateArgs, 'data'> & {
+          data: Prisma.customerUncheckedUpdateInput;
+        },
+      >(
+        data: Prisma.SelectSubset<U, T>,
+        options?: RequestOptions,
+      ) {
+        const response = await fetcher<R, true>(
+          `${ctx.endpoint}/api/model/customer/update`,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'PUT',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+            body: marshal(data),
+          },
+          fetch,
+          true,
+        );
+        return response;
+      },
+      updateMany: async function updateManyCustomer<
+        T extends Prisma.customerUpdateManyArgs,
+        R extends Prisma.BatchPayload,
+      >(data: Prisma.SelectSubset<T, Prisma.customerUpdateManyArgs>, options?: RequestOptions) {
+        const response = await fetcher<R, false>(
+          `${ctx.endpoint}/api/model/customer/updateMany`,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'PUT',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+            body: marshal(data),
+          },
+          fetch,
+          false,
+        );
+        return response;
+      },
+      upsert: async function upsertCustomer<T extends Prisma.customerUpsertArgs, R extends Prisma.customerGetPayload<T>>(
+        data: Prisma.SelectSubset<T, Prisma.customerUpsertArgs>,
+        options?: RequestOptions,
+      ) {
+        const response = await fetcher<R, true>(
+          `${ctx.endpoint}/api/model/customer/upsert`,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'POST',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+            body: marshal(data),
+          },
+          fetch,
+          true,
+        );
+        return response;
+      },
+      delete: async function deleteCustomer<T extends Prisma.customerDeleteArgs, R extends Prisma.customerGetPayload<T>>(
+        data: Prisma.SelectSubset<T, Prisma.customerDeleteArgs>,
+        options?: RequestOptions,
+      ) {
+        const url = `${ctx.endpoint}/api/model/customer/delete`;
+        const reqUrl = makeUrl(url, data);
+        const response = await fetcher<R, true>(
+          reqUrl,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'DELETE',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+            },
+          },
+          fetch,
+          true,
+        );
+        return response;
+      },
+      deleteMany: async function deleteManyCustomer<
+        T extends Prisma.customerDeleteManyArgs,
+        R extends Prisma.BatchPayload,
+      >(data: Prisma.SelectSubset<T, Prisma.customerDeleteManyArgs>, options?: RequestOptions) {
+        const url = `${ctx.endpoint}/api/model/customer/deleteMany`;
+        const reqUrl = makeUrl(url, data);
+        const response = await fetcher<R, false>(
+          reqUrl,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'DELETE',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+            },
+          },
+          fetch,
+          false,
+        );
+        return response;
+      },
+      findMany: async function findManyCustomer<
+        T extends Prisma.customerFindManyArgs,
+        R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>[],
+      >(args?: Prisma.SelectSubset<T, Prisma.customerFindManyArgs>, options?: RequestOptions) {
+        const url = `${ctx.endpoint}/api/model/customer/findMany`;
+        const urlWithArgs = makeUrl(url, args);
+        const response = await fetcher<R, false>(
+          urlWithArgs,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'GET',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+          },
+          fetch,
+          false,
+        );
+        return response;
+      },
+      count: async function countCustomer<T extends Prisma.customerCountArgs, R extends number>(
+        args?: Prisma.SelectSubset<T, Prisma.customerCountArgs>,
+        options?: RequestOptions,
+      ) {
+        const url = `${ctx.endpoint}/api/model/customer/count`;
+        const urlWithArgs = makeUrl(url, args);
+        const response = await fetcher<R, false>(
+          urlWithArgs,
+          {
+            ...ctx?.baseOptions,
+            ...options,
+            method: 'GET',
+            headers: {
+              ...ctx?.baseOptions?.headers,
+              ...await ctx.getAuthorizationHeader(),
+              ...options?.headers,
+              'content-type': 'application/json',
+            },
+          },
+          fetch,
+          false,
+        );
+        return response;
+      },
+      findManyWithCount: async function findManyWithCountCustomer<
+        T extends Prisma.customerFindManyArgs,
+        R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>[],
+        C extends number,
+      >(args?: Prisma.SelectSubset<T, Prisma.customerFindManyArgs>, options?: RequestOptions) {
+        const { distinct, orderBy, where } = args || {};
+        const [data, count] = await Promise.all([
+          ctx.customer.findMany(args, options),
+          ctx.customer.count(
+            {
+              orderBy,
+              where,
+            },
+            options,
+          ),
+        ]);
+        return { data, count } as { data: R; count: C };
+      },
+      findFirst: async function findFirstCustomer<
+        T extends Prisma.customerFindFirstArgs,
+        R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>,
+      >(args?: Prisma.SelectSubset<T, Prisma.customerFindFirstArgs>, options?: RequestOptions) {
+        const url = `${ctx.endpoint}/api/model/customer/findFirst`;
         const urlWithArgs = makeUrl(url, args);
         const response = await fetcher<R, false>(
           urlWithArgs,

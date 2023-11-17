@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@roq/cli": "file:../roq-cli",
-    "@roq/client": "^0.0.11",
+    "@roq/client": "^0.0.12-rc2",
     "@roq/nextjs": "^2.0.0-r10",
     "@roq/nodejs": "^1.0.20-rc3",
     "cookie": "^0.6.0",

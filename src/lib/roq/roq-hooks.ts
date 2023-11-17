@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import type { Prisma } from './types';
 import { DefaultArgs, GetFindResult } from './types/runtime/library';
-import { SWRRequestOptions, defaultBrowserClient } from './roq-client'
+import { SWRRequestOptions, roqBrowserClient } from './roq-client'
 import { RequestOptions } from './roq-baas-sdk';
 import {
   
@@ -45,8 +45,10 @@ import {
   
     FileCategoryQuery,
     FileCategoryQueryVariables,
+    useSessionStore,
   
 } from '@roq/client';
+import { useEffect } from 'react';
 
  
 export function useOrganizationFindMany<
@@ -54,7 +56,7 @@ export function useOrganizationFindMany<
   R extends GetFindResult<Prisma.$organizationPayload<DefaultArgs>, T>[],
 >(
   args?: Prisma.SelectSubset<T, Prisma.organizationFindManyArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -74,7 +76,7 @@ export function useOrganizationFindMany<
 
 export function useOrganizationCount<T extends Prisma.organizationCountArgs, R extends number>(
   args?: Prisma.SelectSubset<T, Prisma.organizationCountArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -97,7 +99,7 @@ export function useOrganizationFindManyWithCount<
   R extends { data: GetFindResult<Prisma.$organizationPayload<DefaultArgs>, T>[]; count: number },
 >(
   args?: Prisma.SelectSubset<T, Prisma.organizationFindManyArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -120,7 +122,7 @@ export function useOrganizationFindFirst<
   R extends GetFindResult<Prisma.$organizationPayload<DefaultArgs>, T>,
 >(
   args?: Prisma.SelectSubset<T, Prisma.organizationFindFirstArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -143,7 +145,7 @@ export function useUserFindMany<
   R extends GetFindResult<Prisma.$userPayload<DefaultArgs>, T>[],
 >(
   args?: Prisma.SelectSubset<T, Prisma.userFindManyArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -163,7 +165,7 @@ export function useUserFindMany<
 
 export function useUserCount<T extends Prisma.userCountArgs, R extends number>(
   args?: Prisma.SelectSubset<T, Prisma.userCountArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -186,7 +188,7 @@ export function useUserFindManyWithCount<
   R extends { data: GetFindResult<Prisma.$userPayload<DefaultArgs>, T>[]; count: number },
 >(
   args?: Prisma.SelectSubset<T, Prisma.userFindManyArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -209,7 +211,7 @@ export function useUserFindFirst<
   R extends GetFindResult<Prisma.$userPayload<DefaultArgs>, T>,
 >(
   args?: Prisma.SelectSubset<T, Prisma.userFindFirstArgs>,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   options?: RequestOptions,
   swrOptions?: SWRRequestOptions<R>,
 ) {
@@ -226,12 +228,101 @@ export function useUserFindFirst<
     },
   );
 }
+ 
+export function useCustomerFindMany<
+  T extends Prisma.customerFindManyArgs,
+  R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>[],
+>(
+  args?: Prisma.SelectSubset<T, Prisma.customerFindManyArgs>,
+  roqClient = roqBrowserClient,
+  options?: RequestOptions,
+  swrOptions?: SWRRequestOptions<R>,
+) {
+  const key = JSON.stringify(['useCustomerFindMany', args || {}]);
+  return useSWR<R, Error>(
+    key,
+    async () => {
+      const result = await roqClient.customer.findMany(args, options);
+      return result as R;
+    },
+    {
+      ...swrOptions,
+      fallbackData: swrOptions?.initialData ?? swrOptions?.fallbackData,
+    },
+  );
+}
+
+export function useCustomerCount<T extends Prisma.customerCountArgs, R extends number>(
+  args?: Prisma.SelectSubset<T, Prisma.customerCountArgs>,
+  roqClient = roqBrowserClient,
+  options?: RequestOptions,
+  swrOptions?: SWRRequestOptions<R>,
+) {
+  const key = JSON.stringify(['useCustomerCount', args || {}]);
+  return useSWR<R, Error>(
+    key,
+    async () => {
+      const result = await roqClient.customer.count(args, options);
+      return result as R;
+    },
+    {
+      ...swrOptions,
+      fallbackData: swrOptions?.initialData ?? swrOptions?.fallbackData,
+    },
+  );
+}
+
+export function useCustomerFindManyWithCount<
+  T extends Prisma.customerFindManyArgs,
+  R extends { data: GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>[]; count: number },
+>(
+  args?: Prisma.SelectSubset<T, Prisma.customerFindManyArgs>,
+  roqClient = roqBrowserClient,
+  options?: RequestOptions,
+  swrOptions?: SWRRequestOptions<R>,
+) {
+  const key = JSON.stringify(['useCustomerFindManyWithCount', args || {}]);
+  return useSWR<R, Error>(
+    key,
+    async () => {
+      const result = await roqClient.customer.findManyWithCount(args, options);
+      return result as R;
+    },
+    {
+      ...swrOptions,
+      fallbackData: swrOptions?.initialData ?? swrOptions?.fallbackData,
+    },
+  );
+}
+
+export function useCustomerFindFirst<
+  T extends Prisma.customerFindFirstArgs,
+  R extends GetFindResult<Prisma.$customerPayload<DefaultArgs>, T>,
+>(
+  args?: Prisma.SelectSubset<T, Prisma.customerFindFirstArgs>,
+  roqClient = roqBrowserClient,
+  options?: RequestOptions,
+  swrOptions?: SWRRequestOptions<R>,
+) {
+  const key = JSON.stringify(['useCustomerFindFirst', args || {}]);
+  return useSWR<R, Error>(
+    key,
+    async () => {
+      const result = await roqClient.customer.findFirst(args, options);
+      return result as R;
+    },
+    {
+      ...swrOptions,
+      fallbackData: swrOptions?.initialData ?? swrOptions?.fallbackData,
+    },
+  );
+}
 
 
   
 export function useRoqPlatformUserProfiles(
   args?: UserProfilesQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<UserProfilesQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformUserProfiles', args || {}]);
@@ -250,7 +341,7 @@ export function useRoqPlatformUserProfiles(
       
 export function useRoqPlatformUserProfile(
   args: UserProfileQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<UserProfileQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformUserProfile', args || {}]);
@@ -269,7 +360,7 @@ export function useRoqPlatformUserProfile(
       
 export function useRoqPlatformRoles(
   args?: RolesQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<RolesQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformRoles', args || {}]);
@@ -288,7 +379,7 @@ export function useRoqPlatformRoles(
       
 export function useRoqPlatformRole(
   args: RoleQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<RoleQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformRole', args || {}]);
@@ -307,7 +398,7 @@ export function useRoqPlatformRole(
       
 export function useRoqPlatformUserInvites(
   args?: UserInvitesQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<UserInvitesQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformUserInvites', args || {}]);
@@ -326,7 +417,7 @@ export function useRoqPlatformUserInvites(
       
 export function useRoqPlatformUserInvite(
   args: UserInviteQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<UserInviteQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformUserInvite', args || {}]);
@@ -345,7 +436,7 @@ export function useRoqPlatformUserInvite(
       
 export function useRoqPlatformFiles(
   args?: FilesQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<FilesQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformFiles', args || {}]);
@@ -364,7 +455,7 @@ export function useRoqPlatformFiles(
       
 export function useRoqPlatformFile(
   args: FileQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<FileQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformFile', args || {}]);
@@ -383,7 +474,7 @@ export function useRoqPlatformFile(
       
 export function useRoqPlatformFileCategoryContentTypes(
   args?: FileCategoryContentTypesQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<FileCategoryContentTypesQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformFileCategoryContentTypes', args || {}]);
@@ -402,7 +493,7 @@ export function useRoqPlatformFileCategoryContentTypes(
       
 export function useRoqPlatformFileCategoryContentGroup(
   args: FileCategoryContentGroupQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<FileCategoryContentGroupQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformFileCategoryContentGroup', args || {}]);
@@ -421,7 +512,7 @@ export function useRoqPlatformFileCategoryContentGroup(
       
 export function useRoqPlatformFileCategoryContentGroups(
   args?: FileCategoryContentGroupsQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<FileCategoryContentGroupsQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformFileCategoryContentGroups', args || {}]);
@@ -440,7 +531,7 @@ export function useRoqPlatformFileCategoryContentGroups(
       
 export function useRoqPlatformFileCategories(
   args?: FileCategoriesQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<FileCategoriesQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformFileCategories', args || {}]);
@@ -459,7 +550,7 @@ export function useRoqPlatformFileCategories(
       
 export function useRoqPlatformFileCategory(
   args: FileCategoryQueryVariables,
-  roqClient = defaultBrowserClient,
+  roqClient = roqBrowserClient,
   swrOptions?: SWRRequestOptions<FileCategoryQuery>,
 ) {
   const key = JSON.stringify(['useRoqPlatformFileCategory', args || {}]);
@@ -475,4 +566,16 @@ export function useRoqPlatformFileCategory(
     },
   );
 }
-    
+
+export const useSession = () => {
+  const { fetchSession, session } = useSessionStore()
+
+  useEffect(() => {
+    if (session?.status === 'unauthenticated' && session?.session === undefined) {
+      console.log('call fetch')
+      fetchSession('/api/auth/session');
+    }
+  },[session?.status]);
+
+  return session;
+};

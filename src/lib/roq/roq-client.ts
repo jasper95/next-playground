@@ -40,4 +40,4 @@ export const createBrowserClient = (backendHost?: string, platformHost?: string)
     }
   )
 }
-export const defaultBrowserClient = createBrowserClient()
+export const roqBrowserClient = createBrowserClient()

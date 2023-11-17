@@ -1,6 +1,6 @@
 
 import { RoqBaasSdk } from "./roq-baas-sdk"
-import { Platform, PlatformClientOptionsType } from '@roq/nodejs'
+import { Platform } from '@roq/nodejs'
 import { NextApiRequest } from "next"
 import { cookies } from 'next/headers'
 
@@ -29,14 +29,14 @@ export class RoqServerClient {
         if(this.authStorage['roq-session-token']) {
           return Promise.resolve(`Bearer ${this.authStorage['roq-session-token']}`)
         }
-        return Promise.resolve(undefined)
+        return Promise.resolve()
       },
     })
   }
 
   public asSuperAdmin() {
     return new RoqBaasSdk(this.backendHost, {
-      getAccessToken: () => Promise.resolve(`Basic ${Buffer.from(`undefined:undefined`).toString('base64')}`)
+      getAccessToken: () => Promise.resolve(`Basic ${Buffer.from(`${process.env.ROQ_ENVIRONMENT_ID}:${process.env.ROQ_API_KEY}`).toString('base64')}`)
     })
   }
 }
@@ -54,12 +54,11 @@ export const createServerClient = (backendHost?: string, platformOptions: Platfo
   return new RoqServerClient(authStorage, backendHost || process.env.ROQ_API_URL!, platformOptions)
 }
 
-export const createApiRouteServerClient = (request: NextApiRequest, backendHost?: string, platformOptions: PlatformClientOptionsType = defaultPlatformOptions) => {
+export const createPagesServerClient = (request: NextApiRequest, backendHost?: string, platformOptions: PlatformClientOptionsType = defaultPlatformOptions) => {
   const authStorage = {
     'roq-session-token': request.cookies['roq-session-token'] as string
   }
   return new RoqServerClient(authStorage, backendHost || process.env.ROQ_API_URL!, platformOptions)
 }
 
-export const defaultRoqServerClient = createServerClient()
-
+export const roqServerClient = createServerClient()

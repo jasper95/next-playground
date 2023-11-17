@@ -1,6 +1,6 @@
 'use client';
 import { useOrganizationFindMany } from "@/lib/roq";
-import { defaultBrowserClient } from "@/lib/roq/roq-client";
+import { roqBrowserClient } from "@/lib/roq/roq-client";
 
 export default function RegisterPage() {
   const { data, error } = useOrganizationFindMany()
@@ -8,8 +8,8 @@ export default function RegisterPage() {
   console.log('data: ', data);
   return (
     <div>
-      <button onClick={() => defaultBrowserClient.signUp()}>Signup</button>
-      <button onClick={() => defaultBrowserClient.signIn()}>Signin</button>
+      <button onClick={() => roqBrowserClient.signUp()}>Signup</button>
+      <button onClick={() => roqBrowserClient.signIn()}>Signin</button>
     </div>
   )
 }
